@@ -14,7 +14,7 @@ const signJwt = (payload, options) => {
 };
 
 const createAuthSuccessResponseBody = async (userId) => {
-  let accessToken = signJwt({ id: userId }, {
+  let accessToken = signJwt({ userId: userId }, {
     algorithm: 'RS256',
     expiresIn: config.jwtExpiration
   });
@@ -29,7 +29,6 @@ const createAuthSuccessResponseBody = async (userId) => {
 };
 
 exports.signup = (req, res) => {
-  // Save User to Database
   User.create({
     email: req.body.email,
     password: bcrypt.hashSync(req.body.password, 8)
