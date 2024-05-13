@@ -13,14 +13,30 @@ const signJwt = (payload, options) => {
   return jwt.sign(payload, privateKey, options);
 };
 
+const createAuthSuccessResponseBody = async (userId) => {
+  let accessToken = signJwt({ id: userId }, {
+    algorithm: 'RS256',
+    expiresIn: config.jwtExpiration
+  });
+
+  let refreshToken = await RefreshToken.createToken(userId, signJwt);
+
+  return {
+    userId: userId,
+    accessToken: accessToken,
+    refreshToken: refreshToken,
+  };
+};
+
 exports.signup = (req, res) => {
   // Save User to Database
   User.create({
     email: req.body.email,
     password: bcrypt.hashSync(req.body.password, 8)
   })
-    .then(user => {
-      res.send({ message: "User was registered successfully!" });
+    .then(async (user) => {
+      let responseBody = await createAuthSuccessResponseBody(user.id);
+      res.status(200).send(responseBody);
     })
     .catch(err => {
       res.status(500).send({ message: err.message });
@@ -50,19 +66,8 @@ exports.signin = (req, res) => {
         });
       }
 
-      let token = signJwt({ id: user.id }, {
-        algorithm: 'RS256',
-        expiresIn: config.jwtExpiration
-      });
-
-      let refreshToken = await RefreshToken.createToken(user.id, signJwt);
-
-      res.status(200).send({
-          id: user.id,
-          email: user.email,
-          accessToken: token,
-          refreshToken: refreshToken,
-        });
+      let responseBody = await createAuthSuccessResponseBody(user.id);
+      res.status(200).send(responseBody);
     })
     .catch(err => {
       res.status(500).send({ message: err.message });
@@ -84,11 +89,11 @@ exports.checkRefreshTokenExpiration = async (req, res) => {
 
     const verifyExpiration = RefreshToken.verifyExpiration(refreshToken)
 
-    return res.status(200).json({
+    res.status(200).json({
       verifyExpiration: verifyExpiration,
     });
   } catch (err) {
-    return res.status(500).send({ message: err });
+    res.status(500).send({ message: err });
   }
 };
 
@@ -118,17 +123,9 @@ exports.refreshToken = async (req, res) => {
       return;
     }
 
-    let newAccessToken = signJwt({ id: req.userId }, {
-      algorithm: 'RS256',
-      expiresIn: config.jwtExpiration
-    });
-    let newRefreshToken = await RefreshToken.createToken(req.userId, signJwt);
-
-    return res.status(200).json({
-      accessToken: newAccessToken,
-      refreshToken: newRefreshToken,
-    });
+    let responseBody = await createAuthSuccessResponseBody(req.userId);
+    res.status(200).send(responseBody);
   } catch (err) {
-    return res.status(500).send({ message: err });
+    res.status(500).send({ message: err });
   }
 };
