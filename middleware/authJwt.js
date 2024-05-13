@@ -22,7 +22,31 @@ verifyToken = (req, res, next) => {
     });
   }
 
-  jwt.verify(token, config.secret, (err, decoded) => {
+  let base64PublicKey = process.env.PHOTO_ALBUM_PUBLIC_KEY
+  let publicKey = Buffer.from(base64PublicKey, 'base64')
+
+  jwt.verify(token, publicKey, (err, decoded) => {
+    if (err) {
+      return catchError(err, res);
+    }
+    req.userId = decoded.id;
+    next();
+  });
+};
+
+verifyTokenIgnoreExpiration = (req, res, next) => {
+  let token = req.headers["x-access-token"];
+
+  if (!token) {
+    return res.status(403).send({
+      message: "No token provided!"
+    });
+  }
+
+  let base64PublicKey = process.env.PHOTO_ALBUM_PUBLIC_KEY
+  let publicKey = Buffer.from(base64PublicKey, 'base64')
+
+  jwt.verify(token, publicKey, { ignoreExpiration: true }, (err, decoded) => {
     if (err) {
       return catchError(err, res);
     }
@@ -32,6 +56,7 @@ verifyToken = (req, res, next) => {
 };
 
 const authJwt = {
-  verifyToken: verifyToken
+  verifyToken: verifyToken,
+  verifyTokenIgnoreExpiration: verifyTokenIgnoreExpiration
 };
 module.exports = authJwt;

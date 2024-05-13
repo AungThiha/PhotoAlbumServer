@@ -1,4 +1,5 @@
 const verifySignUp = require("../middleware/verifySignUp");
+const { verifyTokenIgnoreExpiration } = require("../middleware/authJwt");
 const controller = require("../controllers/auth.controller");
 
 module.exports = function(app) {
@@ -19,6 +20,12 @@ module.exports = function(app) {
   );
 
   app.post("/api/auth/signin", controller.signin);
-  app.post("/api/auth/refreshtoken", controller.refreshToken);
+  app.post(
+    "/api/auth/refreshtoken", 
+    [
+      verifyTokenIgnoreExpiration
+    ],
+    controller.refreshToken
+  );
   app.post("/api/auth/checkRefreshTokenExpiration", controller.checkRefreshTokenExpiration);
 };

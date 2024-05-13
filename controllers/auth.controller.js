@@ -7,6 +7,12 @@ const Op = db.Sequelize.Op;
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 
+const signJwt = (payload, options) => {
+  const base64PrivateKey = process.env.PHOTO_ALBUM_PRIVATE_KEY
+  const privateKey = Buffer.from(base64PrivateKey, 'base64')
+  return jwt.sign(payload, privateKey, options);
+};
+
 exports.signup = (req, res) => {
   // Save User to Database
   User.create({
@@ -44,11 +50,12 @@ exports.signin = (req, res) => {
         });
       }
 
-      const token = jwt.sign({ id: user.id }, config.secret, {
+      let token = signJwt({ id: user.id }, {
+        algorithm: 'RS256',
         expiresIn: config.jwtExpiration
       });
 
-      let refreshToken = await RefreshToken.createToken(user.id);
+      let refreshToken = await RefreshToken.createToken(user.id, signJwt);
 
       res.status(200).send({
           id: user.id,
@@ -70,8 +77,6 @@ exports.checkRefreshTokenExpiration = async (req, res) => {
   try {
     let refreshToken = await RefreshToken.findOne({ where: { token: requestToken } });
 
-    console.log(refreshToken)
-
     if (!refreshToken) {
       res.status(403).json({ message: "Refresh token is not valid!" });
       return;
@@ -89,32 +94,15 @@ exports.checkRefreshTokenExpiration = async (req, res) => {
 
 exports.refreshToken = async (req, res) => {
 
-  // verify access token
-  let token = req.headers["x-access-token"];
-  if (!token) {
-    return res.status(403).send({
-      message: "No token provided!"
-    });
-  }
-
   const { refreshToken: requestToken } = req.body;
   if (requestToken == null) {
     return res.status(403).json({ message: "Refresh Token is required!" });
   }
 
-  jwt.verify(token, config.secret, { ignoreExpiration: true }, (err, decoded) => {
-    if (err) {
-      return res.status(401).send({ message: err });
-    }
-    req.userId = decoded.id;
-  });
-
   try {
     let refreshToken = await RefreshToken.findOne(
         { where: { token: requestToken, userId: req.userId } }
-      );
-
-    console.log(refreshToken)
+    );
 
     if (!refreshToken) {
       res.status(403).json({ message: "Refresh token is not valid!" });
@@ -130,10 +118,11 @@ exports.refreshToken = async (req, res) => {
       return;
     }
 
-    let newAccessToken = jwt.sign({ id: req.userId }, config.secret, {
-      expiresIn: config.jwtExpiration,
+    let newAccessToken = signJwt({ id: req.userId }, {
+      algorithm: 'RS256',
+      expiresIn: config.jwtExpiration
     });
-    let newRefreshToken = await RefreshToken.createToken(req.userId);
+    let newRefreshToken = await RefreshToken.createToken(req.userId, signJwt);
 
     return res.status(200).json({
       accessToken: newAccessToken,
