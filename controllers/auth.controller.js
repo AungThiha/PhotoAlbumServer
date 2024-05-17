@@ -103,28 +103,30 @@ exports.refreshToken = async (req, res) => {
     return res.status(403).json({ message: "Refresh Token is required!" });
   }
 
-  try {
-    let refreshToken = await RefreshToken.findOne(
+  RefreshToken.findOne(
         { where: { token: requestToken, userId: req.userId } }
-    );
+    )
+    .then(async (refreshToken) => {
 
-    if (!refreshToken) {
-      res.status(403).json({ message: "Refresh token is not valid!" });
-      return;
-    }
+      if (!refreshToken) {
+        res.status(403).json({ message: "Refresh token is not valid!" });
+        return;
+      }
 
-    if (RefreshToken.isExpired(refreshToken)) {
-      RefreshToken.destroy({ where: { id: refreshToken.id } });
-      
-      res.status(403).json({
-        message: "Refresh token was expired. Please make a new signin request",
-      });
-      return;
-    }
+      if (RefreshToken.isExpired(refreshToken)) {
+        RefreshToken.destroy({ where: { id: refreshToken.id } });
+        
+        res.status(403).json({
+          message: "Refresh token was expired. Please make a new signin request",
+        });
+        return;
+      }
 
-    let responseBody = await createAuthSuccessResponseBody(req.userId);
-    res.status(200).send(responseBody);
-  } catch (err) {
-    res.status(500).send({ message: err });
-  }
+      let responseBody = await createAuthSuccessResponseBody(req.userId);
+
+      res.status(200).send(responseBody);
+    })
+    .catch(err => {
+      res.status(500).send({ message: err.message });
+    });
 };
