@@ -113,9 +113,9 @@ exports.refreshToken = async (req, res) => {
         return;
       }
 
+      RefreshToken.destroy({ where: { id: refreshToken.id } });
+
       if (RefreshToken.isExpired(refreshToken)) {
-        RefreshToken.destroy({ where: { id: refreshToken.id } });
-        
         res.status(403).json({
           message: "Refresh token was expired. Please make a new signin request",
         });
