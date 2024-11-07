@@ -13,6 +13,7 @@ app.use(
     extended: true,
   })
 )
+app.use('/photos', express.static('photos'))
 
 // sync shouldn't be used in production
 // see https://sequelize.org/docs/v7/models/migrations/ for db migration in production
@@ -26,6 +27,7 @@ app.get('/', (request, response) => {
 
 // routes
 require('./routes/auth.routes')(app);
+require('./routes/photos.routes')(app);
 
 app.listen(port, () => {
   console.log(`App running on port ${port}.`)
