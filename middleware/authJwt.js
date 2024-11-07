@@ -5,6 +5,13 @@ const User = db.user;
 
 const { TokenExpiredError } = jwt;
 
+function removeBearer(token) {
+  if (typeof token !== 'string') {
+    return null;
+  }
+  return token.startsWith("Bearer ") ? token.slice(7) : null;
+}
+
 const catchError = (err, res) => {
   if (err instanceof TokenExpiredError) {
     return res.status(401).send({ message: "Unauthorized! Access Token was expired!" });
@@ -14,7 +21,8 @@ const catchError = (err, res) => {
 }
 
 verifyToken = (req, res, next) => {
-  let token = req.headers["x-access-token"];
+  let bearerToken = req.headers["authorization"];
+  let token = removeBearer(bearerToken);
 
   if (!token) {
     return res.status(403).send({
@@ -35,7 +43,8 @@ verifyToken = (req, res, next) => {
 };
 
 verifyTokenIgnoreExpiration = (req, res, next) => {
-  let token = req.headers["x-access-token"];
+  let bearerToken = req.headers["authorization"];
+  let token = removeBearer(bearerToken);
 
   if (!token) {
     return res.status(403).send({
