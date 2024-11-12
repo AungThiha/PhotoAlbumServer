@@ -13,7 +13,7 @@ module.exports = function(app) {
   app.get(
     "/photos",
     [
-      // verifyToken
+      verifyToken
     ],
     controller.photos
   );
