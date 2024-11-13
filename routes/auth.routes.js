@@ -24,7 +24,7 @@ module.exports = function(app) {
   })  
 
   app.get(
-    '/api/is_token_valid', 
+    '/api/auth/is_token_valid', 
     [
       verifyToken
     ],
