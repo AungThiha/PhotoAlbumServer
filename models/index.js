@@ -1,6 +1,8 @@
 const config = require("../config/db.config.js");
 
-/*const Sequelize = require("sequelize");
+/*
+// to connect to local
+const Sequelize = require("sequelize");
 const sequelize = new Sequelize(
   config.DB,
   config.USER,
@@ -18,6 +20,7 @@ const sequelize = new Sequelize(
   }
 );*/
 
+// to connect to database in heroku
 const Sequelize = require('sequelize');
 sequelize = new Sequelize(process.env.DATABASE_URL, {
     dialectOptions: {
