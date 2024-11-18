@@ -1,6 +1,6 @@
 const config = require("../config/db.config.js");
 
-const Sequelize = require("sequelize");
+/*const Sequelize = require("sequelize");
 const sequelize = new Sequelize(
   config.DB,
   config.USER,
@@ -16,7 +16,27 @@ const sequelize = new Sequelize(
       idle: config.pool.idle
     }
   }
+);*/
+
+const Sequelize = require('sequelize');
+sequelize = new Sequelize(process.env.DATABASE_URL, {
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false
+      }
+    }
+  }
 );
+
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log('Connection has been established successfully.');
+  })
+  .catch(err => {
+    console.error('Unable to connect to the database:', err);
+  });
 
 const db = {};
 
