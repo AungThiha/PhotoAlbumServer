@@ -10,7 +10,7 @@ exports.photos = (req, res) => {
         return res.status(500).json({ error: 'Unable to provide photos' });
     }
 
-    const baseUrl = `${req.protocol}://${req.headers.host}`;
+    const baseUrl = `https://${req.headers.host}`;
 
     const photos = files.map((file, index) => ({
         id: index + 1,
