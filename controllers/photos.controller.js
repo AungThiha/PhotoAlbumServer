@@ -1,3 +1,6 @@
+const fs = require('fs');
+const path = require('path');
+
 const photosDirectory = path.join(__dirname, '../photos/');
 
 exports.photos = (req, res) => {
