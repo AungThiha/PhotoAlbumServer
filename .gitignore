@@ -133,3 +133,5 @@ dist
 .secrets/
 
 data.json
+
+photos/.DS_Store
