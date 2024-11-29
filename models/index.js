@@ -1,13 +1,30 @@
+const Sequelize = require("sequelize");
 const config = require("../config/db.config.js");
 
-/*
-// to connect to local
-const Sequelize = require("sequelize");
-const sequelize = new Sequelize(
-  config.DB,
-  config.USER,
-  config.PASSWORD,
-  {
+let sequelize;
+
+if (process.argv.includes("release") || process.env.NODE_ENV === "release") {
+  // Release configuration
+  sequelize = new Sequelize(process.env.DATABASE_URL, {
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
+    },
+  });
+
+  sequelize
+    .authenticate()
+    .then(() => {
+      console.log("Connection has been established successfully.");
+    })
+    .catch((err) => {
+      console.error("Unable to connect to the database:", err);
+    });
+} else {
+  // Debug configuration
+  sequelize = new Sequelize(config.DB, config.USER, config.PASSWORD, {
     host: config.HOST,
     port: config.PORT,
     dialect: config.dialect,
@@ -15,31 +32,10 @@ const sequelize = new Sequelize(
       max: config.pool.max,
       min: config.pool.min,
       acquire: config.pool.acquire,
-      idle: config.pool.idle
-    }
-  }
-);*/
-
-// to connect to database in heroku
-const Sequelize = require('sequelize');
-sequelize = new Sequelize(process.env.DATABASE_URL, {
-    dialectOptions: {
-      ssl: {
-        require: true,
-        rejectUnauthorized: false
-      }
-    }
-  }
-);
-
-sequelize
-  .authenticate()
-  .then(() => {
-    console.log('Connection has been established successfully.');
-  })
-  .catch(err => {
-    console.error('Unable to connect to the database:', err);
+      idle: config.pool.idle,
+    },
   });
+}
 
 const db = {};
 
