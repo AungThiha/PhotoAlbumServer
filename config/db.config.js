@@ -1,6 +1,6 @@
 module.exports = {
   HOST: "localhost",
-  USER: "me",
+  USER: "hello",
   PASSWORD: "password",
   DB: "photo_album",
   PORT: 5432,
