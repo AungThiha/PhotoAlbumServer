@@ -103,14 +103,14 @@ Install Node.js using Homebrew:
 brew install node
 ```
 
-### Verify Node.js and npm Installation
+### Verify Node.js and npm Installation 
 Check the installed versions of Node.js and npm to ensure they were installed correctly:
 ```
 node -v
 npm -v
 ```
 
-## Setting Up Node.js Dependencies
+## Setting Up Node.js Dependencies (Any Unix-based System)
 
 ### 1. Navigate to the Project Directory
 Navigate to the directory where your project is located:
@@ -124,14 +124,14 @@ Install all the dependencies specified in the `package.json` file:
 npm install
 ```
 
-## Creating the Database Using Node.js
+## Creating the Database Using Node.js (Any Unix-based System)
 Run the following command to finalize the database creation:
 ```
 node create_db.js
 ```
 This can take a while. Please wait until the command is finished.
 
-## Start the Application
+## Start the Application (Any Unix-based System)
 Run the application:
 ```
 node app.js
@@ -144,7 +144,7 @@ Go to localhost with the port printed in the previous step in your browser. Exam
 http://localhost:8080/
 ```
 
-## Database Configuration in Node.js
+## Database Configuration in Node.js (Any Unix-based System)
 
 The configuration for the local environment is in `config/db.config.js`. If you created the database user with a different username and password than recommended, please adjust that file.
 
