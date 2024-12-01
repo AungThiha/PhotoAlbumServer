@@ -2,7 +2,7 @@ Express.js Backend Application for the university project.
 
 ## System Requirements
 
-This application has been tested on a 2014 MacBook (https://support.apple.com/en-us/111942, Access on: 27 Nov 2024), confirming it as the minimum system requirement. Testing on an M1 MacBook also confirmed compatibility. While Node.js and PostgreSQL work on Linux and Windows, this guide focuses on macOS. Unix-based users can follow along, adjusting installation steps using the official Node.js and PostgreSQL documentation.
+This application has been tested on a 2014 MacBook (https://support.apple.com/en-us/111942, Accessed on: 27 Nov 2024), confirming it as the minimum system requirement. Testing on an M1 MacBook also confirmed compatibility. While Node.js and PostgreSQL work on Linux and Windows, this guide focuses on macOS. Unix-based users can follow along, adjusting installation steps using the official Node.js and PostgreSQL documentation.
 
 ### Minimum System Requirements
 
@@ -197,6 +197,6 @@ node app.js release
 ```
 
 The database setup written in "**models/index.js"** is provided by Heroku:
-https://help.heroku.com/QD1AIH8R/how-do-i-use-sequelize-to-connect-to-heroku-postgres
+https://help.heroku.com/QD1AIH8R/how-do-i-use-sequelize-to-connect-to-heroku-postgres (Accessed on: 27 Nov 2024)
 
 Heroku login may be required to access this page.
