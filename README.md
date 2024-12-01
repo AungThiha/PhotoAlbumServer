@@ -69,7 +69,7 @@ Create a new user with a username and password:
 CREATE USER [user_name] WITH PASSWORD '[password]';
 ```
 
-It's recommended to use "hello" for username and "password" for password to avoid reconfiguring "**config/db.config.js"**:
+It's recommended to use "hello" for username and "password" for password to avoid reconfiguring **config/db.config.js**:
 
 ```
 CREATE USER hello WITH PASSWORD 'password';
@@ -146,7 +146,7 @@ cd /path/to/your/project
 
 ### 2. Install Project Dependencies
 
-Install all the dependencies specified in the "**package.json"** file:
+Install all the dependencies specified in the **package.json** file:
 
 ```
 npm install
@@ -174,15 +174,15 @@ This command will display the port number for accessing the application.
 
 ## Confirm the App Is Working
 
-Open a web browser and navigate to "**http://localhost:[port]**", where "**[port]"** is the number displayed in the previous step.
+Open a web browser and navigate to "**http://localhost:[port]**", where **[port]** is the number displayed in the previous step.
 
 ## Database Configuration in Node.js (Any Unix-based System)
 
-The configuration for the local environment is in "**config/db.config.js"**. If you created the database user with a different username and password than recommended, please adjust that file.
+The configuration for the local environment is in **config/db.config.js**. If you created the database user with a different username and password than recommended, please adjust that file.
 
-"config/db.config.js" is used by "models/index.js".
+**config/db.config.js** is used by **models/index.js**.
 
-If the app is run with the argument "**release"**, it doesn't use "**config/db.config.js"** as it's a setup for Heroku.
+If the app is run with the argument **release**, it doesn't use **config/db.config.js** as it's a setup for Heroku.
 
 Locally, the app is run with:
 
@@ -196,7 +196,7 @@ But on Heroku, it's run with:
 node app.js release
 ```
 
-The database setup written in "**models/index.js"** is provided by Heroku:
+The database setup written in **models/index.js** is provided by Heroku:
 https://help.heroku.com/QD1AIH8R/how-do-i-use-sequelize-to-connect-to-heroku-postgres (Accessed on: 27 Nov 2024)
 
 Heroku login may be required to access this page.
