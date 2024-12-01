@@ -2,7 +2,7 @@ Express.js Backend Application for the university project.
 
 ## System Requirements
 
-This application has been tested on a 2014 MacBook (https://support.apple.com/en-us/111942, Accessed on: 27 Nov 2024), confirming it as the minimum system requirement. Testing on an M1 MacBook also confirmed compatibility. While Node.js and PostgreSQL work on Linux and Windows, this guide focuses on macOS. Unix-based users can follow along, adjusting installation steps using the official Node.js and PostgreSQL documentation.
+This application has been tested on a 2014 MacBook (https://support.apple.com/en-us/111942, Accessed on: 27 Nov 2024), confirming it as the minimum system requirement. Testing on an M1 MacBook also confirmed compatibility. While Node.js and PostgreSQL work on Linux and Windows, this guide focuses on macOS. Unix-based users can follow along by using the official Node.js and PostgreSQL documentation for the installation steps.
 
 ### Minimum System Requirements
 
