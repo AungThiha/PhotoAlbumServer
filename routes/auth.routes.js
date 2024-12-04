@@ -19,10 +19,6 @@ module.exports = function(app) {
     controller.signup
   );
 
-  app.get('/home', function (req, res) {  
-    res.status(200).send({ message: "home" });
-  })  
-
   app.get(
     '/api/auth/is_token_valid', 
     [
